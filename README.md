@@ -1,5 +1,7 @@
 # MNIST Neural Network from Scratch
 
+Note: All the code has been written by me.
+
 A small neural network that recognizes handwritten digits, written with nothing but NumPy. No PyTorch, no TensorFlow. Forward pass, backpropagation and gradient descent are all done by hand.
 
 It gets **90.5% accuracy** on the MNIST test set.

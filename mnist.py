@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
-data = pd.read_csv('apps/ml/dataset/mnist_train.csv')
+data = pd.read_csv('dataset/mnist_train.csv')
 data = np.array(data)
 m, n = data.shape
 
@@ -34,7 +34,6 @@ def forward_prop(W1, B1, W2, B2, X):
     A2 = softmax_calc(Z2)
     return Z1, A1, Z2, A2
 
-
 def one_hot_converter(Y):
     one_hot_Y = np.zeros((Y.size, Y.max() + 1))
     one_hot_Y[np.arange(Y.size), Y] = 1
@@ -44,10 +43,10 @@ def backward_prop(W1, B1, W2, B2, Z1, A1, Z2, A2, X, Y):
     one_hot_Y = one_hot_converter(Y)
     dZ2 = A2 - one_hot_Y
     dW2 = 1 / m * dZ2.dot(A1.T)
-    dB2 = 1 / m * np.sum(dZ2)
+    dB2 = 1 / m * np.sum(dZ2, axis=1, keepdims=True)
     dZ1 = W2.T.dot(dZ2) * (Z1 > 0)
     dW1 = 1 / m * dZ1.dot(X.T)
-    dB1 = 1 / m * np.sum(dZ1)
+    dB1 = 1 / m * np.sum(dZ1, axis=1, keepdims=True)
     return dW1, dB1, dW2, dB2
 
 def update_parameters(W1, B1, W2, B2, dW1, dB1, dW2, dB2, learning_rate):
@@ -78,9 +77,10 @@ def gradient_descent(X, Y, alpha, iter_count):
     return W1, B1, W2, B2
     
 W1, B1, W2, B2 = gradient_descent(X_train, Y_train, 0.5, 500)
+np.savez('mnist_weights.npz', W1=W1, B1=B1, W2=W2, B2=B2)
 
 
-# test_data = pd.read_csv('apps/ml/dataset/mnist_test.csv')
+# test_data = pd.read_csv('dataset/mnist_test.csv')
 # test_data = np.array(test_data)
 # m_test, n_test = test_data.shape
 

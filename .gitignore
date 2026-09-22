@@ -1,1 +1,3 @@
-apps/ml/dataset/*.csv
+.DS_Store
+__pycache__/
+dataset/*.csv
